@@ -1,13 +1,13 @@
-*.rknn
-*.pt
-*.torchscript
-*.onnx
-*.log
-*.pyc
-*.zip
+#*.rknn
+#*.pt
+#*.torchscript
+#*.onnx
+#*.log
+#*.pyc
+#*.zip
 #*.npy
-*.pkl
-*.pb
+#*.pkl
+#*.pb
 
 check*.onnx
 
