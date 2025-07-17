@@ -108,6 +108,14 @@ static int read_image_jpeg(const char* path, image_buffer_t* image)
     // 错误码为0时，表示警告，错误码为-1时表示错误
     int pixelFormat = TJPF_RGB;
     ret = tjDecompress2(handle, jpegBuf, size, sw_out_buf, width, 0, height, pixelFormat, flags);
+    printf("DEBUG: Pixels after tjDecompress2, expecting RGB (0-255):\n");
+if (sw_out_buf && sw_out_size >= 9) {
+    printf("Px1: R=%u, G=%u, B=%u\n", sw_out_buf[0], sw_out_buf[1], sw_out_buf[2]);
+    printf("Px2: R=%u, G=%u, B=%u\n", sw_out_buf[3], sw_out_buf[4], sw_out_buf[5]);
+    printf("Px3: R=%u, G=%u, B=%u\n", sw_out_buf[6], sw_out_buf[7], sw_out_buf[8]);
+} else {
+    printf("Buffer is NULL or too small after tjDecompress2.\n");
+}
     // ret = tjDecompressToYUV2(handle, jpeg_buf, size, dst_buf, *width, padding, *height, flags);
     if ((0 != tjGetErrorCode(handle)) && (ret < 0)) {
         printf("error : decompress to yuv failed, errorStr:%s, errorCode:%d\n", tjGetErrorStr(),

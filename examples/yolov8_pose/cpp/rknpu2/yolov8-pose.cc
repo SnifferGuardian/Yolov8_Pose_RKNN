@@ -201,6 +201,14 @@ int inference_yolov8_pose_model(rknn_app_context_t *app_ctx, image_buffer_t *img
     inputs[0].fmt = RKNN_TENSOR_NHWC;
     inputs[0].size = app_ctx->model_width * app_ctx->model_height * app_ctx->model_channel;
     inputs[0].buf = dst_img.virt_addr;
+printf("DEBUG: Final input buffer before rknn_inputs_set (first 3 pixels, R,G,B order):\n");
+if (dst_img.virt_addr && dst_img.size >= 9) {
+    printf("Px1: R=%u, G=%u, B=%u\n", dst_img.virt_addr[0], dst_img.virt_addr[1], dst_img.virt_addr[2]);
+    printf("Px2: R=%u, G=%u, B=%u\n", dst_img.virt_addr[3], dst_img.virt_addr[4], dst_img.virt_addr[5]);
+    printf("Px3: R=%u, G=%u, B=%u\n", dst_img.virt_addr[6], dst_img.virt_addr[7], dst_img.virt_addr[8]);
+} else {
+    printf("Final buffer is NULL or too small.\n");
+}
 
     ret = rknn_inputs_set(app_ctx->rknn_ctx, app_ctx->io_num.n_input, inputs);
     if (ret < 0)

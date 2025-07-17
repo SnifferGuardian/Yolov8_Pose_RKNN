@@ -72,7 +72,23 @@ int main(int argc, char **argv)
         printf("inference_yolov8_pose_model fail! ret=%d\n", ret);
         goto out;
     }
-
+printf("DEBUG: src_image.width = %d, src_image.height = %d, src_image.format = %d\n",
+       src_image.width, src_image.height, src_image.format);
+printf("DEBUG: src_image.format = %d (0=NONE, 1=RGB888, 2=BGR888, 3=RGBA8888, 4=BGRA8888, 5=YUV420SP_NV21, ...)\n", src_image.format);
+// You might want to include the enum definition from image_utils.h for clarity.
+// For example:
+// typedef enum _image_format {
+//     IMAGE_FORMAT_NONE = 0,
+//     IMAGE_FORMAT_RGB888,
+//     IMAGE_FORMAT_BGR888,
+//     IMAGE_FORMAT_RGBA8888,
+//     IMAGE_FORMAT_BGRA8888,
+//     IMAGE_FORMAT_YUV420SP_NV21,
+//     IMAGE_FORMAT_YUV420SP_NV12,
+//     IMAGE_FORMAT_YUV420_PLANAR,
+//     IMAGE_FORMAT_YUV422P,
+//     IMAGE_FORMAT_GRAY8,
+// } image_format_t;
     // 画框和概率
     char text[256];
     

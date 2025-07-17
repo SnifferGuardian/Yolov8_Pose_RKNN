@@ -428,12 +428,12 @@ int post_process(rknn_app_context_t *app_ctx, void *outputs, letterbox_t *letter
         grid_w = app_ctx->output_attrs[i].dims[3];
         stride = model_in_h / grid_h;
         if (app_ctx->is_quant) {
-            validCount += process_i8((int8_t *)_outputs[i].buf, grid_h, grid_w, stride, filterBoxes, objProbs,
+            validCount += process_i8((int8_t *)_outputs[i]->virt_addr, grid_h, grid_w, stride, filterBoxes, objProbs,
                                      classId, conf_threshold, app_ctx->output_attrs[i].zp, app_ctx->output_attrs[i].scale,index);
         }
         else
         {
-            validCount += process_fp32((float *)_outputs[i].buf, grid_h, grid_w, stride, filterBoxes, objProbs,
+            validCount += process_fp32((float *)_outputs[i]->virt_addr, grid_h, grid_w, stride, filterBoxes, objProbs,
                                      classId, conf_threshold, app_ctx->output_attrs[i].zp, app_ctx->output_attrs[i].scale, index);
         }
         index += grid_h * grid_w;
@@ -480,20 +480,20 @@ int post_process(rknn_app_context_t *app_ctx, void *outputs, letterbox_t *letter
                         od_results->results[last_count].keypoints[j][2] = deqnt_affine_u8_to_f32(((uint8_t *)_outputs[3].buf)[j * 3 * 8400 + 2 * 8400 + keypoints_index],
                                 app_ctx->output_attrs[3].zp, app_ctx->output_attrs[3].scale);       
                 #else
-                        od_results->results[last_count].keypoints[j][0] = ((float)((rknpu2::float16 *)_outputs[3].buf)[j*3*8400+0*8400+keypoints_index] 
+                        od_results->results[last_count].keypoints[j][0] = ((float)((rknpu2::float16 *)_outputs[3]->virt_addr)[j*3*8400+0*8400+keypoints_index] 
                                                                         - letter_box->x_pad)/ letter_box->scale;
-                        od_results->results[last_count].keypoints[j][1] = ((float)((rknpu2::float16 *)_outputs[3].buf)[j*3*8400+1*8400+keypoints_index] 
+                        od_results->results[last_count].keypoints[j][1] = ((float)((rknpu2::float16 *)_outputs[3]->virt_addr)[j*3*8400+1*8400+keypoints_index] 
                                                                             - letter_box->y_pad)/ letter_box->scale;
-                        od_results->results[last_count].keypoints[j][2] = (float)((rknpu2::float16 *)_outputs[3].buf)[j*3*8400+2*8400+keypoints_index];
+                        od_results->results[last_count].keypoints[j][2] = (float)((rknpu2::float16 *)_outputs[3]->virt_addr)[j*3*8400+2*8400+keypoints_index];
                 #endif
             }
             else
             {
-                od_results->results[last_count].keypoints[j][0] = (((float *)_outputs[3].buf)[j*3*8400+0*8400+keypoints_index] 
+                od_results->results[last_count].keypoints[j][0] = (((float *)_outputs[3]->virt_addr)[j*3*8400+0*8400+keypoints_index] 
                                                                 - letter_box->x_pad)/ letter_box->scale;
-                od_results->results[last_count].keypoints[j][1] = (((float *)_outputs[3].buf)[j*3*8400+1*8400+keypoints_index] 
+                od_results->results[last_count].keypoints[j][1] = (((float *)_outputs[3]->virt_addr)[j*3*8400+1*8400+keypoints_index] 
                                                                     - letter_box->y_pad)/ letter_box->scale;
-                od_results->results[last_count].keypoints[j][2] = ((float *)_outputs[3].buf)[j*3*8400+2*8400+keypoints_index];
+                od_results->results[last_count].keypoints[j][2] = ((float *)_outputs[3]->virt_addr)[j*3*8400+2*8400+keypoints_index];
             }
         }
 
