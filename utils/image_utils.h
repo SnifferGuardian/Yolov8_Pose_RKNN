@@ -1,3 +1,4 @@
+#include <math.h>
 #ifndef _RKNN_MODEL_ZOO_IMAGE_UTILS_H_
 #define _RKNN_MODEL_ZOO_IMAGE_UTILS_H_
 
@@ -64,7 +65,7 @@ int convert_image_with_letterbox(image_buffer_t* src_image, image_buffer_t* dst_
  * @param image [in] Image
  * @return int image size
  */
-int get_image_size(image_buffer_t* image);
+int get_image_size(const image_buffer_t* image); // Add 'const' here
 
 #ifdef __cplusplus
 }  // extern "C"
